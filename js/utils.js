@@ -31,7 +31,7 @@ function renderBoard(board) {
 
             var cellClass = getClassName({ i, j }) + ' '
             // cellClass += (currCell.type === WALL) ? 'wall' : 'floor'
-            strHTML += `<td class="cell ${cellClass}" onclick="onCellClicked(this,${i},${j})" >`
+            strHTML += `<td class="cell ${cellClass}" onclick="onCellClicked(this,${i},${j})" oncontextmenu="onCellMarked(event,${i},${j}); return false;">`
 
             if (currCell.isMine) {
 
@@ -70,6 +70,20 @@ function countMinesAroundCell(board, row, col) {
         }
     }
     return count;
+}
+function countNegsAroundCell(board, elCell, row, col) {
+    const size = board.length;
+    // let cell = '';
+    for (let i = row - 1; i <= row + 1; i++) {
+        for (let j = col - 1; j <= col + 1; j++) {
+            if (i >= 0 && i < size && j >= 0 && j < size && !(i === row && j === col)) {
+                if (!board[i][j].isMine) {
+                    elCell.innerText = gBoard[i+1][j].minesAroundCount
+                }
+            }
+        }
+    }
+    return elCell.innerText;
 }
 
 function getEmpIdx(board) {

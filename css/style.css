@@ -1,6 +1,4 @@
 .board {
-
-    
     padding: 1px;
     text-align: center;
     transition: background-color 0.5s;
@@ -29,3 +27,6 @@ body {
     background-color: rgb(19, 19, 19);
     color: rgb(121, 121, 255);
 }
+ .cell {
+    color: transparent;
+ }
