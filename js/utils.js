@@ -71,20 +71,20 @@ function countMinesAroundCell(board, row, col) {
     }
     return count;
 }
-function countNegsAroundCell(board, elCell, row, col) {
-    const size = board.length;
-    // let cell = '';
-    for (let i = row - 1; i <= row + 1; i++) {
-        for (let j = col - 1; j <= col + 1; j++) {
-            if (i >= 0 && i < size && j >= 0 && j < size && !(i === row && j === col)) {
-                if (!board[i][j].isMine) {
-                    elCell.innerText = gBoard[i+1][j].minesAroundCount
-                }
-            }
-        }
-    }
-    return elCell.innerText;
-}
+// function countNegsAroundCell(board, elCell, row, col) {
+//     const size = board.length;
+//     // let cell = '';
+//     for (let i = row - 1; i <= row + 1; i++) {
+//         for (let j = col - 1; j <= col + 1; j++) {
+//             if (i >= 0 && i < size && j >= 0 && j < size && !(i === row && j === col)) {
+//                 if (!board[i][j].isMine) {
+//                     elCell.innerText = gBoard[i+1][j].minesAroundCount
+//                 }
+//             }
+//         }
+//     }
+//     return elCell.innerText;
+// }
 
 function getEmpIdx(board) {
     let emptyIdx = []
@@ -111,7 +111,37 @@ function addMine() {
 }
 
 
+let seconds = 0
+let milliseconds = 0
+let intervalId
 
+
+
+function timeIncrease() {
+    milliseconds += 10
+    if (milliseconds === 1000) {
+        milliseconds -= 1000
+        seconds++
+    }
+    updateH1 ()
+}
+
+
+function timer() {
+    intervalId = setInterval(timeIncrease, 10)
+    
+}
+
+function stopTime() {
+    clearInterval(intervalId)
+    seconds = 0
+ milliseconds = 0
+}
+
+function updateH1 () {
+    let elH1 = document.querySelector('h1')
+elH1.innerText = `time:${seconds}:${milliseconds}`
+}
 
 
 

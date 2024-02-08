@@ -9,29 +9,34 @@
 </head>
 
 <body onload="onInitGame()">
-    <h1></h1>
+    <h1>time: 00:00</h1>
     <h2 class="balls-count"> <span></span></h2>
     <h2 class="negs-count"> <span></span></h2>
-
+    <span class="life">life left: 3</span>
     <table>
         <tbody class="board"></tbody>
     </table>
 
     <div class="btn">
-        <button onclick="begginer()">begginer</button>
-        <button onclick="medium()">medium</button>
-        <button onclick="expert()">expert</button>
+        <button class="levels" onclick="begginer()">begginer</button>
+        <button class="levels" onclick="medium()">medium</button>
+        <button class="levels" onclick="expert()">expert</button>
     </div>
     
     
     
-    <div class="modal hide">
-        <!-- <h2 class="user-msg">You Won!</h2> -->
-        <button class="restart-btn" onclick="onInitGame()">Restart</button>
+    <div class="modal">
+        <!-- <h2 class="user-msg">You lost!</h2> -->
+        <button class="restart-btn" onclick="onInitGame()"></button>
     </div>
 
     <script src="js/utils.js"></script>
     <script src="js/index.js"></script>
+
+<br>
+<footer>Ori Haguel</footer>
+
+
 </body>
 
 </html>
