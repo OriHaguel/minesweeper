@@ -27,6 +27,7 @@ body {
     background-color: rgb(19, 19, 19);
     color: rgb(121, 121, 255);
 }
- /* .cell {
+ .cell {
     color: transparent;
- } */
+    opacity: 0;
+ }
