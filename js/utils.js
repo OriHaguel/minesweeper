@@ -15,9 +15,9 @@ function createBoard(size) {
 
     }
 // for testing
-    board[0][0].isMine = true
-    board[1][1].isMine = true
-    board[2][2].isMine = true
+    // board[0][0].isMine = true
+    // board[1][1].isMine = true
+    // board[2][2].isMine = true
     
     return board
 }
