@@ -177,7 +177,6 @@ function formatDate(date, format) {
     };
     return date.toLocaleDateString(undefined, options);
 }
-// console.log(formatDate(new Date()))
 
 function uniqueArray(arr) {
     return arr.filter((value, index, self) => {
@@ -193,20 +192,6 @@ function qsa(selector, parent = document) {
     return [...parent.querySelectorAll(selector)]
 }
 
-// function renderCountGamerNegs() {
-//     var negsCount = 0;
-//     for (var i = gGamerPos.i - 1; i <= gGamerPos.i + 1; i++) {
-//         if (i < 0 || i >= gBoard.length) continue;
-//         for (var j = gGamerPos.j - 1; j <= gGamerPos.j + 1; j++) {
-//             if (j < 0 || j >= gBoard[i].length) continue;
-//             if (i === gGamerPos.i && j === gGamerPos.j) continue;
-//             const currCell = gBoard[i][j]
-//             if (currCell.gameElement === BALL) negsCount++;
-//         }
-//     }
-//     const elNgsCount = document.querySelector('.negs-count span')
-//     elNgsCount.innerText = negsCount
-//}
 
 function getClassName(location) {
     return `cell-${location.i}-${location.j}`
