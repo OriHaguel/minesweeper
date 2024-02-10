@@ -14,11 +14,6 @@ function createBoard(size) {
         }
 
     }
-// for testing
-    // board[0][0].isMine = true
-    // board[1][1].isMine = true
-    // board[2][2].isMine = true
-    
     return board
 }
 
@@ -30,21 +25,12 @@ function renderBoard(board) {
             const currCell = board[i][j]
 
             var cellClass = getClassName({ i, j }) + ' '
-            // cellClass += (currCell.type === WALL) ? 'wall' : 'floor'
-            
-            
-            
-            
+
             strHTML += `<td class="cell ${cellClass}" onclick="onCellClicked(this,${i},${j})" oncontextmenu="onCellMarked(event,${i},${j}); return false;"> `
 
-           
             if (currCell.isMine) {
                 strHTML += MINES
-            } 
-           
-           
-           
-            
+            }
 
             strHTML += '</td>'
         }
@@ -53,14 +39,6 @@ function renderBoard(board) {
     const elBoard = document.querySelector('.board')
     elBoard.innerHTML = strHTML
 }
-
-
-
-
-
-
-
-
 
 function renderCountGamerNegs(board) {
     for (var i = 0; i < board.length; i++) {
@@ -85,20 +63,6 @@ function countMinesAroundCell(board, row, col) {
     }
     return count;
 }
-// function countNegsAroundCell(board, elCell, row, col) {
-//     const size = board.length;
-//     // let cell = '';
-//     for (let i = row - 1; i <= row + 1; i++) {
-//         for (let j = col - 1; j <= col + 1; j++) {
-//             if (i >= 0 && i < size && j >= 0 && j < size && !(i === row && j === col)) {
-//                 if (!board[i][j].isMine) {
-//                     elCell.innerText = gBoard[i+1][j].minesAroundCount
-//                 }
-//             }
-//         }
-//     }
-//     return elCell.innerText;
-// }
 
 function getEmpIdx(board) {
     let emptyIdx = []
@@ -120,16 +84,16 @@ function addMine() {
     const emptyLocation = getEmpIdx(gBoard)
     if (!emptyLocation) return
 
-        gBoard[emptyLocation.i][emptyLocation.j].isMine = true
-        // renderCell(emptyLocation, MINES)
+    gBoard[emptyLocation.i][emptyLocation.j].isMine = true
+
 }
 
-
+function getClassName(location) {
+    return `cell-${location.i}-${location.j}`
+}
 let seconds = 0
 let milliseconds = 0
 let intervalId
-
-
 
 function timeIncrease() {
     milliseconds += 10
@@ -137,61 +101,27 @@ function timeIncrease() {
         milliseconds -= 1000
         seconds++
     }
-    updateH1 ()
+    updateH1()
 }
-
 
 function timer() {
     intervalId = setInterval(timeIncrease, 10)
-    
+
 }
 
 function stopTime() {
     clearInterval(intervalId)
     seconds = 0
- milliseconds = 0
+    milliseconds = 0
 }
 
-function updateH1 () {
+function updateH1() {
     let elH1 = document.querySelector('h1')
-elH1.innerText = `time:${seconds}:${milliseconds}`
+    elH1.innerText = `time:${seconds}:${milliseconds}`
 }
-
-function renderCell(location, value) {
-    const elCell = document.querySelector(`.cell-${location.i}-${location.j}`)
-    elCell.innerHTML = value
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 function getRandomIntInclusive(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min
-}
-
-function makeId(length = 6) {
-    var txt = ''
-    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-
-    for (var i = 0; i < length; i++) {
-        txt += possible.charAt(Math.floor(Math.random() * possible.length))
-    }
-
-    return txt
 }
 
 function getRandomColor() {
@@ -211,35 +141,5 @@ function shuffleArray(array) {
     return array
 }
 
-function formatDate(date, format) {
-    const options = {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-        hour12: true,
-        timeZoneName: 'short'
-    };
-    return date.toLocaleDateString(undefined, options);
-}
-
-function uniqueArray(arr) {
-    return arr.filter((value, index, self) => {
-        return self.indexOf(value) === index;
-    });
-}
-
-function qs(selector, parent = document) {
-    return parent.querySelector(selector)
-}
-
-function qsa(selector, parent = document) {
-    return [...parent.querySelectorAll(selector)]
-}
 
 
-function getClassName(location) {
-    return `cell-${location.i}-${location.j}`
-}
