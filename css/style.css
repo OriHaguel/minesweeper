@@ -30,8 +30,9 @@ body {
     color: rgb(121, 121, 255);
 }
  .cell {
-    color: transparent;
-    opacity: 0;
+    color: transparent; 
+     opacity: 0;
+    
  }
 
  footer {

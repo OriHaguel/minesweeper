@@ -31,14 +31,20 @@ function renderBoard(board) {
 
             var cellClass = getClassName({ i, j }) + ' '
             // cellClass += (currCell.type === WALL) ? 'wall' : 'floor'
-            strHTML += `<td class="cell ${cellClass}" onclick="onCellClicked(this,${i},${j})" oncontextmenu="onCellMarked(event,${i},${j}); return false;">`
+            
+            
+            
+            
+            strHTML += `<td class="cell ${cellClass}" onclick="onCellClicked(this,${i},${j})" oncontextmenu="onCellMarked(event,${i},${j}); return false;"> `
 
+           
             if (currCell.isMine) {
-
                 strHTML += MINES
-            } else {
-                strHTML += ''
-            }
+            } 
+           
+           
+           
+            
 
             strHTML += '</td>'
         }
@@ -47,6 +53,14 @@ function renderBoard(board) {
     const elBoard = document.querySelector('.board')
     elBoard.innerHTML = strHTML
 }
+
+
+
+
+
+
+
+
 
 function renderCountGamerNegs(board) {
     for (var i = 0; i < board.length; i++) {
@@ -107,7 +121,7 @@ function addMine() {
     if (!emptyLocation) return
 
         gBoard[emptyLocation.i][emptyLocation.j].isMine = true
-    // renderCell(emptyLocation, MINES)
+        // renderCell(emptyLocation, MINES)
 }
 
 
@@ -143,7 +157,10 @@ function updateH1 () {
 elH1.innerText = `time:${seconds}:${milliseconds}`
 }
 
-
+function renderCell(location, value) {
+    const elCell = document.querySelector(`.cell-${location.i}-${location.j}`)
+    elCell.innerHTML = value
+}
 
 
 

@@ -12,7 +12,7 @@ let gGame = {
 const MINES = '💣'
 const FLAG = '🚩'
 let isFirstClick = true
-let lifeCounter = 3
+let lifeCounter 
 
 function checkGameOver() {
     if ((gLevel.size ** 2) - gLevel.Mine === gGame.shownCount && gLevel.Mine === gGame.markedCount) {
@@ -31,12 +31,12 @@ function begginer() {
     gLevel.size = 4
     gLevel.Mine = 2
     gBoard = createBoard(gLevel.size)
-    howManyMines(gLevel.Mine)
-    document.querySelector('.modal').style.display = 'none'
-    renderCountGamerNegs(gBoard)
+    // document.querySelector('.modal').style.display = 'none'
     renderBoard(gBoard)
     isFirstClick = true
     lifeCounter = 2
+    document.querySelector('.restart-btn').innerText = '😀'
+    document.querySelector('.life').innerText = `life counter: ${lifeCounter}`
     stopTime()
 }
 
@@ -47,12 +47,12 @@ function medium() {
     gLevel.size = 8
     gLevel.Mine = 14
     gBoard = createBoard(gLevel.size)
-    howManyMines(gLevel.Mine)
-    document.querySelector('.modal').style.display = 'none'
-    renderCountGamerNegs(gBoard)
+    // document.querySelector('.modal').style.display = 'none'
     renderBoard(gBoard)
     isFirstClick = true
     lifeCounter = 3
+    document.querySelector('.restart-btn').innerText = '😀'
+    document.querySelector('.life').innerText = `life counter: ${lifeCounter}`
     stopTime()
 }
 
@@ -63,38 +63,67 @@ function expert() {
     gLevel.size = 12
     gLevel.Mine = 32
     gBoard = createBoard(gLevel.size)
-    howManyMines(gLevel.Mine)
-    document.querySelector('.modal').style.display = 'none'
-    renderCountGamerNegs(gBoard)
+    // document.querySelector('.modal').style.display = 'none'
     renderBoard(gBoard)
     isFirstClick = true
     lifeCounter = 3
+    document.querySelector('.restart-btn').innerText = '😀'
+    document.querySelector('.life').innerText = `life counter: ${lifeCounter}`
     stopTime()
 }
 
 function onInitGame() {
 
     gGame.isOn = true
-    
-    document.querySelector('.modal').style.display = 'none'
+    //document.querySelector('.modal').style.display = 'none'
     gGame.shownCount = 0
     gGame.markedCount = 0
     gLevel.size = 4
     gLevel.Mine = 2
     gBoard = createBoard(gLevel.size)
-    howManyMines(gLevel.Mine)
-    renderCountGamerNegs(gBoard)
     renderBoard(gBoard)
     isFirstClick = true
-    lifeCounter = 3
+    lifeCounter = 2
+    document.querySelector('.restart-btn').innerText = '😀'
+    document.querySelector('.life').innerText = `life counter: ${lifeCounter}`
     stopTime()
+    console.log('gBoard', gBoard)
 }
 
-function howManyMines(num) {
-    for (var i = 0; i < num; i++) {
-        addMine()
+// function howManyMines(num) {
+//     for (var i = 0; i < num; i++) {
+//         addMine()
+//     }
+// }
+function howManyMines(num, clickedRow, clickedCol) {
+    let minesPlaced = 0;
+    while (minesPlaced < num) {
+        const i = getRandomIntInclusive(0, gLevel.size - 1);
+        const j = getRandomIntInclusive(0, gLevel.size - 1);
+        // Ensure the first clicked cell and its neighbors are not mines
+        if (!(i === clickedRow && j === clickedCol) && !isNeighbor(clickedRow, clickedCol, i, j) && !gBoard[i][j].isMine) {
+            gBoard[i][j].isMine = true;
+            minesPlaced++;
+        }
     }
 }
+
+function isNeighbor(clickedRow, clickedCol, row, col) {
+    // Check if the cell is a neighbor of the clicked cell
+    return Math.abs(clickedRow - row) <= 1 && Math.abs(clickedCol - col) <= 1;
+}
+
+
+function placeMinesAndCountNeighbors(clickedRow, clickedCol) {
+    // Place mines randomly
+    howManyMines(gLevel.Mine, clickedRow, clickedCol);
+
+    // Count neighbors for each cell
+    renderCountGamerNegs(gBoard);
+
+}
+
+
 
 function expandShown(board, elCell, row, col) {
 
@@ -102,7 +131,7 @@ function expandShown(board, elCell, row, col) {
 
     for (let i = row - 1; i <= row + 1; i++) {
         for (let j = col - 1; j <= col + 1; j++) {
-            if (i >= 0 && i < size && j >= 0 && j < size && !(i === row && j === col)) {
+            if (i >= 0 && i < size && j >= 0 && j < size) {
 
                 var classesName = `cell-${i}-${j}`
                 var downCell = document.querySelector('.' + classesName)
@@ -129,16 +158,32 @@ function onCellClicked(elCell, i, j) {
 
     if (!gGame.isOn) return
 
-    if (isFirstClick === true) {
-        if (elCell.innerText === MINES) {
-            lifeCounter++
-            isFirstClick = false
-            timer()
-        } else {
-            isFirstClick = false
-            timer()
-        }
+    if (isFirstClick) {
+
+        placeMinesAndCountNeighbors(i, j);
+        
+        // timer();
+        
+        renderBoard(gBoard)
+        
+        isFirstClick = false;
     }
+
+
+    console.log(gBoard)
+
+
+
+    // if (isFirstClick === true) {
+    //     if (elCell.innerText === MINES) {
+    //         lifeCounter++
+    //         isFirstClick = false
+    //         timer()
+    //     } else {
+    //         isFirstClick = false
+    //         timer()
+    //     }
+    // }
 
     if (elCell.innerText === '0') return
 
@@ -153,12 +198,15 @@ function onCellClicked(elCell, i, j) {
         elCell.innerText = gBoard[i][j].minesAroundCount
         elCell.style.color = 'rgb(121, 121, 255)'
         elCell.style.opacity = '100'
-
+        console.log(elCell.innerText)
         if (gBoard[i][j].isShown === false) {
             gBoard[i][j].isShown = true
             gGame.shownCount++
         }
     }
+
+
+
 
     if (elCell.innerText === MINES) {
         lifeCounter--
@@ -167,6 +215,13 @@ function onCellClicked(elCell, i, j) {
         elCell.style.color = 'blue'
         elCell.style.opacity = '100'
         gBoard[i][j].isShown = true
+        document.querySelector('.restart-btn').innerText = '😵'
+       setTimeout(() => {
+       if (lifeCounter !== 0) {
+        document.querySelector('.restart-btn').innerText = '😀'
+       }
+        
+       }, 2000);
         if (lifeCounter === 0) {
             gGame.isOn = false
             isLost()
@@ -178,9 +233,17 @@ function onCellClicked(elCell, i, j) {
 
     }
 
+
+    // console.log(elCell.style.color)
+    // console.log(elCell.style.opacity)
+
     expandShown(gBoard, elCell, i, j)
     checkGameOver()
 }
+
+
+
+
 
 function onCellMarked(event, i, j) {
     event.preventDefault()
