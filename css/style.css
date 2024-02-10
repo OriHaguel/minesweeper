@@ -70,9 +70,20 @@ footer {
 }
 
 .life {
-font-size: 30px;
+    font-size: 30px;
 }
 
 h1 {
     font-size: 50px;
+}
+
+.safe-click {
+    margin-top: 10px;
+    font-size: 30px;
+    margin-left: 900px;
+    background-color: rgb(143, 159, 255);
+    border-radius: 20px;
+    height: 60px;
+    width: 120px;
+    font-size: 17px;
 }

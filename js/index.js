@@ -13,6 +13,7 @@ const MINES = '💣'
 const FLAG = '🚩'
 let isFirstClick = true
 let lifeCounter
+let safeClicksLeft = 3
 
 function checkGameOver() {
     if ((gLevel.size ** 2) - gLevel.Mine === gGame.shownCount && gLevel.Mine === gGame.markedCount) {
@@ -36,6 +37,8 @@ function begginer() {
     lifeCounter = 2
     document.querySelector('.restart-btn').innerText = '😀'
     document.querySelector('.life').innerText = `life left: ${lifeCounter}`
+      safeClicksLeft = 3
+    document.querySelector('.safe-click').innerText = `safe clicks left: ${safeClicksLeft}`
     stopTime()
 }
 
@@ -51,6 +54,8 @@ function medium() {
     lifeCounter = 3
     document.querySelector('.restart-btn').innerText = '😀'
     document.querySelector('.life').innerText = `life left: ${lifeCounter}`
+      safeClicksLeft = 3
+    document.querySelector('.safe-click').innerText = `safe clicks left: ${safeClicksLeft}`
     stopTime()
 }
 
@@ -66,6 +71,8 @@ function expert() {
     lifeCounter = 3
     document.querySelector('.restart-btn').innerText = '😀'
     document.querySelector('.life').innerText = `life left: ${lifeCounter}`
+      safeClicksLeft = 3
+    document.querySelector('.safe-click').innerText = `safe clicks left: ${safeClicksLeft}`
     stopTime()
 }
 
@@ -82,6 +89,9 @@ function onInitGame() {
     lifeCounter = 2
     document.querySelector('.restart-btn').innerText = '😀'
     document.querySelector('.life').innerText = `life left: ${lifeCounter}`
+    safeClicksLeft = 3
+    document.querySelector('.safe-click').innerText = `safe clicks left: ${safeClicksLeft}`
+    
     stopTime()
     console.log('gBoard', gBoard)
 }
@@ -189,10 +199,9 @@ function onCellClicked(elCell, i, j) {
             console.log('you lost')
         }
     }
-   // console.log(hint().i,hint().j)
-   
-   
-   expandShown(gBoard, elCell, i, j)
+
+
+    expandShown(gBoard, elCell, i, j)
     checkGameOver()
 }
 
@@ -242,7 +251,7 @@ function isLost() {
 
 }
 
-function hint() {
+function safeClicks() {
     let emptyIdx = []
 
     for (var i = 0; i < gBoard.length; i++) {
@@ -256,20 +265,24 @@ function hint() {
 
     const random = getRandomIntInclusive(0, emptyIdx.length - 1)
 
+if (safeClicksLeft === 0) return
+    const currCell = document.querySelector(`.cell-${emptyIdx[random].i}-${emptyIdx[random].j}`)
+    currCell.innerText = gBoard[emptyIdx[random].i][emptyIdx[random].j].minesAroundCount
+    currCell.style.backgroundColor = 'red'
+    currCell.style.opacity = '100'
+    
+    setTimeout(() => {
+        currCell.style.backgroundColor = 'transparent'
+        currCell.style.opacity = '0'
+    }, 1000);
+    
+    
+    gBoard[emptyIdx[random].i][emptyIdx[random].j].isShown = true
+    gGame.shownCount++
+    safeClicksLeft--
+    document.querySelector('.safe-click').innerText = `safe clicks left: ${safeClicksLeft}`
 
 
-
-
-    //console.log(emptyIdx[random].i,emptyIdx[random].j)
- 
- 
- 
-    console.log(`cell-${emptyIdx[random].i}-${emptyIdx[random].j}`)
- //console.log(`cell-${emptyIdx[random].i}-${emptyIdx[random].j}`.innerText)
- 
-
-//return emptyIdx[random]
-
-            }
+}
 
 
